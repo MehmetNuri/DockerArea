@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  mariadb:
+    container_name: mariadb_container
+    image: mariadb:latest
+    environment:
+        MYSQL_ROOT_PASSWORD: mariadb
+        MYSQL_DATABASE: mariadb
+        MYSQL_USER: mariadb
+        MYSQL_PASSWORD: mariadb
+    volumes:
+       - mariadb:/data/mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - mariadb
+    restart: always
+networks:
+    mariadb:
+        driver: bridge
+
+volumes:
+    mariadb:
