@@ -1,0 +1,18 @@
+version: "3.7"
+services: 
+    rabbitmq:
+        image: rabbitmq:latest
+        container_name: rabbit_container
+        hostname: rabbitmq01
+        labels: 
+            name: rabbitmq01
+        ports: 
+            - "15672:15672"
+            - "5672:5672"
+        volumes: 
+            -  "./enabled_plugins:/etc/rabbitmq/enabled_plugins"
+        environment:
+            RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+            RABBITMQ_DEFAULT_USER: "rabbitmq"
+            RABBITMQ_DEFAULT_PASS: "rabbitmq"
+            RABBITMQ_DEFAULT_VHOST: "/"
