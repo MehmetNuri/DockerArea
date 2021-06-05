@@ -1,0 +1,19 @@
+version: "3.7"
+
+services: 
+    redis:
+        container_name: redis_container
+        image: redis:latest
+        command: redis-server --requirepass secretpass --appendonly yes
+        ports: 
+            - 6379:6379
+        volumes:
+            - redis:/data/redis
+        networks: 
+            - redis
+networks: 
+    redis:
+        driver: bridge
+
+volumes: 
+    redis:
