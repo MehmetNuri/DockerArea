@@ -1,0 +1,24 @@
+version: "3.7"
+services: 
+    cassandra:
+        container_name: cassandradb
+        image: cassandra:4.0
+        ports: 
+            - "7000:7000"
+            - "9042:9042"
+        environment:
+            - CASSANDRA_CLUSTER_NAME=cassandradb
+            - CASSANDRA_PASSWORD=cassandradb
+            - MAX_HEAP_SIZE=2G
+            - HEAP_NEWSIZE=200M
+        volumes: 
+            - cassandra_data:/data/cassandra
+        networks: 
+            - cassandra_network
+
+networks: 
+    cassandra_network:
+        driver: bridge
+
+volumes: 
+    cassandra_data:
