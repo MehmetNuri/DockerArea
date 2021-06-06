@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  oracle-xe:
+    container_name: oraclexe_container
+    image: daggerok/oracle:xe
+    shm_size: 1g
+    environment:
+      ORACLE_PWD: password
+    ports: 
+        - "1521:1521"
+    networks: 
+        - oraclexe_network
+
+networks:
+    oraclexe_network:
+        driver: bridge
