@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  rethinkdb:
+    image: rethinkdb:latest
+    ports:
+      - "8080:8080"
+      - "29015:29015"
+      - "28015:28015"
+    volumes: 
+        - rethinkdb_data:/data/rethinkdb
+  
+networks:
+    rethinkdb:
+        driver: bridge
+
+volumes:
+    rethinkdb_data:
