@@ -1,0 +1,19 @@
+version: "3.7"
+services: 
+    mssql:
+        container_name: mssqllinux
+        image: 'microsoft/mssql-server-linux:latest'
+        ports:
+            - '1433:1433'
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=Pa55w0rd
+        volumes:
+            - mssql:/data/mssql
+        networks:
+            - mssql_network
+networks: 
+    mssql_network:
+        driver: bridge
+volumes: 
+    mssql:
