@@ -1,0 +1,9 @@
+client:
+  hosts:
+    - elasticsearch
+  port: 9200
+  http_auth: elastic:admin
+
+logging:
+  loglevel: INFO
+  logformat: default
