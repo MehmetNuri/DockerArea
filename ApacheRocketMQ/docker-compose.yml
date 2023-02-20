@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  namesrv:
+    image: apache/rocketmq:latest
+    container_name: rocketmq_namesrv
+    command: sh mqnamesrv
+    restart: always
+    volumes:
+      - ./data/namesrv/logs:/root/logs
+      - ./data/namesrv/store:/root/store
+    ports:
+      - "9876:9876"
+    networks:
+      - rocketmq_net
+
+  broker:
+    image: apache/rocketmq:latest
+    container_name: rocketmq_broker
+    command: sh mqbroker -n namesrv:9876
+    restart: always
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+    environment:
+      - "JAVA_OPTS=-Duser.home=/opt/rocketmq"
+    volumes:
+      - ./data/broker/logs:/opt/rocketmq/logs
+      - ./data/broker/store:/opt/rocketmq/store
+    depends_on:
+      - namesrv
+    networks:
+      - rocketmq_net
+  
+  dashboard:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    container_name: rocketmq_dashboard
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - "JAVA_OPTS=-Drocketmq.namesrv.addr=namesrv:9876"
+    depends_on:
+        - broker
+    networks:
+        - rocketmq_net
+
+networks:
+  rocketmq_net:
