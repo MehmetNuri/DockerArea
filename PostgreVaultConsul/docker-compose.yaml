@@ -1,0 +1,64 @@
+version: '3'
+services:
+  
+  consul:
+    image: consul:1.15.4
+    container_name: consul_dev
+    depends_on:
+      - vault
+    environment:
+        CONSUL_HTTP_TOKEN: root
+    ports:
+      - 8500:8500
+    networks:
+      - microservice
+    volumes:
+      - ./consul/consul.conf:/etc/consul/consul.conf
+  
+  vault:
+    image: vault:1.13.3
+    container_name: vault_dev
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - "127.0.0.1:8200:8200"
+    networks:
+      - microservice
+
+    volumes:
+      - ./vault/data:/vault/data:rw
+      - ./vault/config:/vault/config:rw
+      - ./vault/logs:/vault/logs:rw
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config
+    environment:
+    - VAULT_ADDR=http://127.0.0.1:8200
+    - KEY1=WVljLuiP2Hy5qiKlxV+mqhTsizF3IDgCIXW7hmLQ/1HG
+    - KEY2=/twaYJOhpnInqaGgFC12qM4PiYEGZmuB8pNvpoYRRGR5
+    - KEY3=oXGGEjIFpx90Quwpxkxol+NvGdr5Cn1SKOc14KVLPsyc
+    - ROOT_TOKEN=hvs.ep77dSrSPXB12JaA98dNLu37
+
+  db:
+    image: postgres:latest
+    container_name: postgresql_dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - microservice
+    restart: always
+
+networks:
+  microservice:
+    driver: bridge
+
+volumes:
+    postgres:
